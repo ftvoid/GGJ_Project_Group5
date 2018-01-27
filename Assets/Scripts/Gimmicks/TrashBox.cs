@@ -19,9 +19,20 @@ public class TrashBox : MonoBehaviour {
     private Tweener _shakePos;
     private Tweener _shakeRot;
 
+    public bool _isDamage;
+    [SerializeField]
+    [Header("ゴミの出現頻度(s)")]
+    private float _coolTime = 1.0f;
+
     private void Start() {
         Damage();
         //StopShake();
+        StartCoroutine("InstanceGarbage");
+    }
+
+    private void Update()
+    {
+        
     }
 
     /// <summary>
@@ -32,6 +43,20 @@ public class TrashBox : MonoBehaviour {
         _shakeRot = _cover.DOShakeRotation(_shakeDuration, 15, 10, 90, false);
     }
 
+    /// <summary>
+    /// ゴミをインスタンスするためのコルーチン
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator InstanceGarbage() 
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            yield return new WaitForSeconds(_coolTime);
+            Debug.Log("Instance");
+            
+
+        }
+    }
     /// <summary>
     /// ゴミ箱の振動を止める
     /// </summary>
