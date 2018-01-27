@@ -40,9 +40,21 @@ public class GimmickManager : SingletonMonoBehaviour<GimmickManager>
         }
 
         SEsources[number].clip = SE[number];
-        SEsources[number].loop = true;
         SEsources[number].Play();
             return;
+    }
+
+    public void SoundLopeStart(int number)
+    {
+        if (0 > number || SE.Length < number)
+        {
+            return;
+        }
+
+        SEsources[number].clip = SE[number];
+        SEsources[number].loop = true;
+        SEsources[number].Play();
+        return;
     }
 
     /// <summary>
