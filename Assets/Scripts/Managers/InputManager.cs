@@ -14,12 +14,18 @@ public class InputManager : SingletonMonoBehaviour<InputManager> {
     private Subject<Vector2> _onBeginSwipe = new Subject<Vector2>();
     private Subject<Vector2> _onSwiping = new Subject<Vector2>();
     private Subject<Vector2> _onEndSwipe = new Subject<Vector2>();
+    private Subject<Unit> _onBeginPinch = new Subject<Unit>();
+    private Subject<float> _onPinching = new Subject<float>();
+    private Subject<Unit> _onEndPinch = new Subject<Unit>();
 
     public static IObservable<Vector2> OnPress => Instance._onPress;
     public static IObservable<Vector2> OnRelease => Instance._onRelease;
     public static IObservable<Vector2> OnBeginSwipe => Instance._onBeginSwipe;
     public static IObservable<Vector2> OnSwiping => Instance._onSwiping;
     public static IObservable<Vector2> OnEndSwipe => Instance._onEndSwipe;
+    public static IObservable<Unit> OnBeginPinch => Instance._onBeginPinch;
+    public static IObservable<float> OnPinching => Instance._onPinching;
+    public static IObservable<Unit> OnEndPinch => Instance._onEndPinch;
 
     public static bool IsPress => Input.GetMouseButton(0);
     public static bool IsDown => Input.GetMouseButtonDown(0);
@@ -59,5 +65,34 @@ public class InputManager : SingletonMonoBehaviour<InputManager> {
                     isSwiping = false;
                 }
             });
+
+        // ピンチ判定
+        // TODO : 2本指判定はあとで実装、今はマウスホイールで疑似的に再現
+        bool isPinching = false;
+        float pinchDelta = 0;
+        const float pinchSpeed = 1;
+        this.UpdateAsObservable()
+            .Subscribe(_ => {
+                if ( Input.GetMouseButtonDown(2) ) {
+                    isPinching = true;
+                    pinchDelta = 0;
+                    _onBeginPinch.OnNext(Unit.Default);
+                } else if ( Input.GetMouseButtonUp(2) ) {
+                    isPinching = false;
+                    _onEndPinch.OnNext(Unit.Default);
+                }
+
+                if ( isPinching ) {
+                    var scroll = Input.GetAxis("Mouse ScrollWheel");
+                    if ( scroll > 0 ) {
+                        pinchDelta += pinchSpeed;
+                        _onPinching.OnNext(pinchDelta);
+                    } else if ( scroll < 0 ) {
+                        pinchDelta -= pinchSpeed;
+                        _onPinching.OnNext(pinchDelta);
+                    }
+                }
+            });
+
     }
 }
