@@ -9,23 +9,26 @@ using UniRx.Triggers;
 /// タッチ入力管理
 /// </summary>
 public class InputManager : SingletonMonoBehaviour<InputManager> {
+    [SerializeField]
+    private float _swipeThreshold = 0;
+
     private Subject<Vector2> _onPress = new Subject<Vector2>();
     private Subject<Vector2> _onRelease = new Subject<Vector2>();
     private Subject<Vector2> _onBeginSwipe = new Subject<Vector2>();
     private Subject<Vector2> _onSwiping = new Subject<Vector2>();
     private Subject<Vector2> _onEndSwipe = new Subject<Vector2>();
-    private Subject<Unit> _onBeginPinch = new Subject<Unit>();
+    private Subject<Vector2> _onBeginPinch = new Subject<Vector2>();
     private Subject<float> _onPinching = new Subject<float>();
-    private Subject<Unit> _onEndPinch = new Subject<Unit>();
+    private Subject<Vector2> _onEndPinch = new Subject<Vector2>();
 
     public static IObservable<Vector2> OnPress => Instance._onPress;
     public static IObservable<Vector2> OnRelease => Instance._onRelease;
     public static IObservable<Vector2> OnBeginSwipe => Instance._onBeginSwipe;
     public static IObservable<Vector2> OnSwiping => Instance._onSwiping;
     public static IObservable<Vector2> OnEndSwipe => Instance._onEndSwipe;
-    public static IObservable<Unit> OnBeginPinch => Instance._onBeginPinch;
+    public static IObservable<Vector2> OnBeginPinch => Instance._onBeginPinch;
     public static IObservable<float> OnPinching => Instance._onPinching;
-    public static IObservable<Unit> OnEndPinch => Instance._onEndPinch;
+    public static IObservable<Vector2> OnEndPinch => Instance._onEndPinch;
 
     public static bool IsPress => Input.GetMouseButton(0);
     public static bool IsDown => Input.GetMouseButtonDown(0);
@@ -69,6 +72,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager> {
         // ピンチ判定
         // TODO : 2本指判定はあとで実装、今はマウスホイールで疑似的に再現
         bool isPinching = false;
+
+#if UNITY_EDITOR
         float pinchDelta = 0;
         const float pinchSpeed = 1;
         this.UpdateAsObservable()
@@ -76,10 +81,10 @@ public class InputManager : SingletonMonoBehaviour<InputManager> {
                 if ( Input.GetMouseButtonDown(2) ) {
                     isPinching = true;
                     pinchDelta = 0;
-                    _onBeginPinch.OnNext(Unit.Default);
+                    _onBeginPinch.OnNext(Position);
                 } else if ( Input.GetMouseButtonUp(2) ) {
                     isPinching = false;
-                    _onEndPinch.OnNext(Unit.Default);
+                    _onEndPinch.OnNext(Position);
                 }
 
                 if ( isPinching ) {
@@ -93,6 +98,30 @@ public class InputManager : SingletonMonoBehaviour<InputManager> {
                     }
                 }
             });
+#else
+        float beginDist = 0;
+        float sensitivity = 0.01f;
+        this.UpdateAsObservable()
+            .Subscribe(_ => {
+                if ( Input.touchCount >= 2 ) {
+                    var p1 = Input.touches[0].position;
+                    var p2 = Input.touches[1].position;
+                    var dist = Vector2.Distance(p1, p2);
 
+                    if ( !isPinching ) {
+                        isPinching = true;
+                        _onBeginPinch.OnNext(p1);
+                        beginDist = dist;
+                    } else {
+                        _onPinching.OnNext((dist - beginDist) * sensitivity);
+                    }
+                } else {
+                    if ( isPinching ) {
+                        isPinching = false;
+                        _onEndPinch.OnNext(Input.touches[0].position);
+                    }
+                }
+            });
+#endif
     }
 }
