@@ -51,6 +51,19 @@ public class GameManager : MonoBehaviour {
     /// マウスの箇所取得
     /// </summary>
     private Vector3 PressPointPos = Vector3.zero;
+
+    /// <summary>
+    /// E-mailの送信までのタイム
+    /// </summary>
+    [SerializeField]
+    private float EmailRemainTime;
+
+    /// <summary>
+    /// E-mailの種類
+    /// </summary>
+    [SerializeField]
+    private bool GoodOrBad;
+
     void Start ()
     {
         RemainTime = DataManager.Instance.RemainTime;
@@ -186,6 +199,11 @@ public class GameManager : MonoBehaviour {
                     //
             }).AddTo(this);
         }
+    }
+
+    public void EmailAppend()
+    {
+
     }
 
 
