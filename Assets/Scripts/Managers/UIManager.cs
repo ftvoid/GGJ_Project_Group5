@@ -19,6 +19,9 @@ public class UIManager : SingletonMonoBehaviour<UIManager> {
                 return;
             }
             int intTime = (int)value;
+            if ( intTime < 0 ) {
+                intTime = 0;
+            }
             _remainTime.text = string.Format("{0:00}:{1:00}", intTime / 60, intTime % 60);
         }
     }
