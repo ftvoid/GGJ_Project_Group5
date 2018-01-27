@@ -91,8 +91,21 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     /// 体力の最大値
     /// </summary>
     public float MaxHP;
+
+    /// <summary>
+    /// メールの待機時間
+    /// </summary>
+    public float MailCanTapTime;
+
+    /// <summary>
+    /// メールの表示状態
+    /// </summary>
+    public bool MailComeFlag;
+
+    GlitchFx GF;
     void Start()
     {
+        MailComeFlag = false;
         RemainTime = DataManager.Instance.RemainTime;
         HP = DataManager.Instance.HP;
         MaxHP = DataManager.Instance.HP;
@@ -108,10 +121,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         EmailRemainTime = UnityEngine.Random.Range(30, 40);
 
         BadMailNow = false;
+        GF = GetComponent<GlitchFx>();
+        GF.intensity = 0;
     }
 
     void Update()
     {
+        
+
         VirusAttackToPC();
         VirusMemoryAttackDamage.Value = 0;
         PressHitDecision();
@@ -122,6 +139,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         VirusInstiateTimer();
 
         BadMailTimer();
+
+        EmailAppend();
+
+        if (MailComeFlag == true)
+        {
+            MailAppearTimer();
+        }
 
         /*
         if ()
@@ -160,8 +184,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public void VirusAttackToPC()
     {
         if (VirusOccurenceDicision == true)
-        {
+        {            
             HP -= VirusMemoryAttackDamage.Value;
+            GF.intensity = 1 - HP / MaxHP;
             DataManager.Instance.HP = HP;
             if (HP <= 0.0f)
             {
@@ -273,12 +298,23 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         if (i >= 80)
         {
             BadMailAppear();
+            MailCanTapTime = 5.0f;
         }
         else if (i < 80)
         {
             GoodMailAppear();
+            MailCanTapTime = 5.0f;
         }
 
+    }
+
+    public void MailAppearTimer()
+    {
+        MailCanTapTime -= Time.deltaTime;
+        if (MailCanTapTime <=0)
+        {
+            MailComeFlag = false;
+        }
     }
 
     public void GoodMailAppear()

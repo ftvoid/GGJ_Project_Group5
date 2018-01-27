@@ -31,10 +31,13 @@ public class Scaling : MonoBehaviour
     /// </summary>
     public float Size { set { pinch_size = value; } }
 
+    public float Damage;
     void Start()
     {
         myscale = GetComponent<Transform>();
         Dmage();
+
+        GameManager.Instance.AttackDamage += Damage;
 
     }
 
@@ -64,6 +67,7 @@ public class Scaling : MonoBehaviour
                 if (myscale.transform.localScale.x <= pinch_size)
                 {
                     _state = State.Stop;
+                    GameManager.Instance.AttackDamage -= Damage;
                     Destroy(gameObject);
                 }
                 break;
