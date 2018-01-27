@@ -32,7 +32,7 @@ public class Bound_ball : MonoBehaviour
         if(time >= timeout)
         {
 
-            Instantiate(gameObject, transform.position, transform.transform.rotation);
+            Instantiate(gameObject, transform.position, transform.rotation);
             time = 0.0f;
         }
 
