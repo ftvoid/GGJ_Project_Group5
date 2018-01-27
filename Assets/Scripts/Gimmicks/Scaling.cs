@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Scaling : MonoBehaviour
 {
-
+    [SerializeField]
     enum State
     {
         ScaleUp,
@@ -13,10 +13,11 @@ public class Scaling : MonoBehaviour
         Stop
     }
 
+    [SerializeField]
     private State _state = State.Stop;
 
     private Transform myscale;
-    private float pinch_size = 0.0f;
+    private float pinch_size = 1.0f;
 
     [SerializeField]
     [Header("拡大速度(s)")]
@@ -30,37 +31,40 @@ public class Scaling : MonoBehaviour
     /// </summary>
     public float Size { set { pinch_size = value; } }
 
-	void Start ()
+    void Start()
     {
         myscale = GetComponent<Transform>();
+        Dmage();
 
-	}
-	
-	void Update ()
+    }
+
+    void Update()
     {
         switch (_state)
         {
 
             case State.Stop:
+                
                 break;
             case State.ScaleUp:
-                 myscale.transform.localScale += new Vector3(1, 1, 0) * Time.deltaTime * speed;
-             if (myscale.transform.localScale.x >= size)
-               {
+                myscale.transform.localScale += new Vector3(1, 1, 0) * Time.deltaTime * speed;
+                if (myscale.transform.localScale.x >= size)
+                {
                     _state = State.Stop;
-               }
+                }
                 break;
             case State.Pinching:
-                if(0 != pinch_size)
+                if (0 != pinch_size)
                 {
                     _state = State.ScaleDown;
                 }
                 break;
             case State.ScaleDown:
                 myscale.transform.localScale -= new Vector3(1, 1, 0) * Time.deltaTime * speed;
-                if(myscale.transform.localScale.x <= pinch_size)
+                if (myscale.transform.localScale.x <= pinch_size)
                 {
                     _state = State.Stop;
+                    Destroy(gameObject);
                 }
                 break;
 
@@ -70,6 +74,12 @@ public class Scaling : MonoBehaviour
     public void Dmage()
     {
         _state = State.ScaleUp;
+    }
+
+    public void StateChangePinching()
+    {
+        _state = State.ScaleDown;
+        Debug.Log("a");
     }
 
 }

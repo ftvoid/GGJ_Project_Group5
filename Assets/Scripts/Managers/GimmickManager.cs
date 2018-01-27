@@ -11,7 +11,7 @@ public class GimmickManager : SingletonMonoBehaviour<GimmickManager>
     {
         base.Awake();
 
-        GameObject[] obj = GameObject.FindGameObjectsWithTag("GimmickManager");
+        GameObject[] obj = GameObject.FindGameObjectsWithTag("Virus");
         if(obj.Length > 1)
         {
             Destroy(gameObject);
