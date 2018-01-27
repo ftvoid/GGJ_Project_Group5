@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UniRx;
 using System;
 
@@ -102,9 +103,16 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     /// </summary>
     public bool MailComeFlag;
 
+    /// <summary>
+    /// BackGroundの色
+    /// </summary>
+    public Image BackGround; 
+
     GlitchFx GF;
     void Start()
     {
+
+        GameOverScene.SetActive(false);
         MailComeFlag = false;
         RemainTime = DataManager.Instance.RemainTime;
         HP = DataManager.Instance.HP;
@@ -127,32 +135,35 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     void Update()
     {
-        
 
-        VirusAttackToPC();
-        VirusMemoryAttackDamage.Value = 0;
-        PressHitDecision();
-        Pinch();
 
-        TimeDegrease();
-
-        VirusInstiateTimer();
-
-        BadMailTimer();
-
-        EmailAppend();
-
-        if (MailComeFlag == true)
+        if (HP >= 0)
         {
-            MailAppearTimer();
-        }
+            PressHitDecision();
+            Pinch();
 
-        /*
-        if ()
-        {
-        81
+            TimeDegrease();
+
+            VirusInstiateTimer();
+
+            BadMailTimer();
+
+            EmailAppend();
+
+            if (MailComeFlag == true)
+            {
+                MailAppearTimer();
+            }
+            VirusAttackToPC();
+            VirusMemoryAttackDamage.Value = 0;
+
+            /*
+            if ()
+            {
+            81
+            }
+            */
         }
-        */
 
     }
 
@@ -187,6 +198,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         {            
             HP -= VirusMemoryAttackDamage.Value;
             GF.intensity = 1 - HP / MaxHP;
+            float ColorGain = 255 * (HP / MaxHP); 
+            BackGround.color = new Color(255, ColorGain, ColorGain);
             DataManager.Instance.HP = HP;
             if (HP <= 0.0f)
             {
@@ -208,6 +221,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public void TimeDegrease()
     {
         RemainTime -= Time.deltaTime;
+        DataManager.Instance.RemainTime = RemainTime;
         if (RemainTime <= 0.0f)
         {
             GameClearScene();
@@ -216,8 +230,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     public void VirusInstiateTimer()
     {
-        VirusRemainTimer -= Time.deltaTime;
-        DataManager.Instance.RemainTime = VirusRemainTimer;
+        VirusRemainTimer -= Time.deltaTime;        
         if (VirusRemainTimer <= 0)
         {
             VirusInstantiate();
@@ -259,6 +272,33 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     public void Pinch()
     {
+        float i = 0;
+        InputManager.OnPress
+            .Subscribe(Scrollbar =>
+           {
+               PressPointPos = Camera.main.ScreenToWorldPoint(Scrollbar);
+               PressPointPos.z = -10;
+               //i = Scrollbar;
+           }
+            ).AddTo(this);
+
+        
+        Vector3 PressPointLaser = new Vector3(PressPointPos.x, PressPointPos.y, 89);
+        Debug.DrawLine(PressPointPos, PressPointLaser, Color.red);
+        RaycastHit hit;
+        Scaling SC = null;
+        if (Physics.Raycast(PressPointPos, Vector3.Normalize(PressPointLaser - PressPointPos), out hit, Vector3.Distance(PressPointPos, PressPointLaser), VirusMask))
+        {
+            SC = hit.collider.gameObject.GetComponent<Scaling>();
+        }
+            InputManager.OnPinching
+            .Subscribe(Scroller =>
+            {
+                i = Scroller;                
+                SC.StateChangePinching(i);
+            }).AddTo(this);
+         
+        /*
         InputManager.OnPress
             .Subscribe(x => {
                 PressPointPos = Camera.main.ScreenToWorldPoint(x);
@@ -272,14 +312,16 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             Debug.Log("b");
             Scaling SC = hit.collider.gameObject.GetComponent<Scaling>();
             SC.StateChangePinching();
-            /*
+            
             InputManager.OnPinching
                 .Subscribe(scroll =>{
                    
                     //
             }).AddTo(this);
-            */
-        }
+            
+        }*/
+
+
     }
 
     public void EmailAppend()
