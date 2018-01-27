@@ -19,10 +19,17 @@ public class TrashBox : MonoBehaviour {
     private Tweener _shakePos;
     private Tweener _shakeRot;
 
-    public bool _isDamage;
+   
     [SerializeField]
     [Header("ゴミの出現頻度(s)")]
     private float _coolTime = 1.0f;
+
+    [SerializeField]
+    [Header("ゴミの出現数(s)")]
+    private int _trashLoop = 5 ;
+
+    [Header("ゴミのプレハブ")]
+    public GameObject _trash;
 
     private void Start() {
         Damage();
@@ -49,12 +56,11 @@ public class TrashBox : MonoBehaviour {
     /// <returns></returns>
     private IEnumerator InstanceGarbage() 
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < _trashLoop; i++)
         {
             yield return new WaitForSeconds(_coolTime);
-            Debug.Log("Instance");
-            
-
+            GameObject Clone = Instantiate(_trash, gameObject.transform);
+            Clone.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-250.0f, 250.0f), 300.0f));
         }
     }
     /// <summary>
