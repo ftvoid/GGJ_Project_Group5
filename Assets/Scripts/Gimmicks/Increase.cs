@@ -5,6 +5,7 @@ using UnityEngine;
 public class Increase : MonoBehaviour
 {
     private float time = 0.0f;
+    public float Damage;
     [SerializeField]
     [Header("増殖時間")]
     private float timeout = 3.0f;
