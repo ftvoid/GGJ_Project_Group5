@@ -11,7 +11,7 @@ public class GimmickManager : SingletonMonoBehaviour<GimmickManager>
     {
         base.Awake();
 
-        GameObject[] obj = GameObject.FindGameObjectsWithTag("GimmickManager");
+        GameObject[] obj = GameObject.FindGameObjectsWithTag("Virus");
         if(obj.Length > 1)
         {
             Destroy(gameObject);
@@ -40,9 +40,21 @@ public class GimmickManager : SingletonMonoBehaviour<GimmickManager>
         }
 
         SEsources[number].clip = SE[number];
-        SEsources[number].loop = true;
         SEsources[number].Play();
             return;
+    }
+
+    public void SoundLopeStart(int number)
+    {
+        if (0 > number || SE.Length < number)
+        {
+            return;
+        }
+
+        SEsources[number].clip = SE[number];
+        SEsources[number].loop = true;
+        SEsources[number].Play();
+        return;
     }
 
     /// <summary>

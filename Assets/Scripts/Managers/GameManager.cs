@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour {
     /// <summary>
     /// ウィルス発生場所
     /// </summary>
-    public Vector3[] VirusTransform;
+    public Transform[] VirusTransform;
 
     /// <summary>
     /// ウィルスが発生しているかどうか
@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour {
     /// <summary>
     /// マウスの箇所取得
     /// </summary>
-    private Vector3 PressPointPos = Vector3.zero;
+    private Vector3 PressPointPos = new Vector3(100,100,100);
     void Start ()
     {
         RemainTime = DataManager.Instance.RemainTime;
@@ -68,6 +68,12 @@ public class GameManager : MonoBehaviour {
     void Update()
     {
         PressHitDecision();
+        Pinch();
+        VirusAttackToPC();
+        TimeDegrease();
+        
+        VirusInstiateTimer();
+
         /*
         if ()
         {
@@ -79,7 +85,7 @@ public class GameManager : MonoBehaviour {
     public void VirusInstantiate()
     {
         int i = UnityEngine.Random.Range(0, Virus.Length);
-        Instantiate(Virus[i], VirusTransform[i], Virus[i].transform.rotation);
+        Instantiate(Virus[i], VirusTransform[i].position, Virus[i].transform.rotation);
         VirusRemainTimer = UnityEngine.Random.Range(8, 12);
         VirusOccurenceDicision = true;
         //ウィルスのアニメや音の再生関数
@@ -147,11 +153,12 @@ public class GameManager : MonoBehaviour {
                 PressPointPos = Camera.main.ScreenToWorldPoint(x);
                 PressPointPos.z = -10;
             }).AddTo(this);        
-        Vector3 PressPointLaser = new Vector3(PressPointPos.x, PressPointPos.y, -1);
+        Vector3 PressPointLaser = new Vector3(PressPointPos.x, PressPointPos.y, 89);
         Debug.DrawLine(PressPointPos,PressPointLaser,Color.red);
         if (Physics.Raycast(PressPointPos,Vector3.Normalize(PressPointLaser - PressPointPos),Vector3.Distance(PressPointPos,PressPointLaser),VirusMask))
         {
             //Virus消すスクリプト
+            VirusOccurenceDicision = false;
         }
     }
 
@@ -162,11 +169,12 @@ public class GameManager : MonoBehaviour {
                 PressPointPos = Camera.main.ScreenToWorldPoint(x);
                 PressPointPos.z = -10;
             }).AddTo(this);
-        Vector3 PressPointLaser = new Vector3(PressPointPos.x, PressPointPos.y, -1);
+        Vector3 PressPointLaser = new Vector3(PressPointPos.x, PressPointPos.y, 89);
         Debug.DrawLine(PressPointPos, PressPointLaser, Color.red);
         if (Physics.Raycast(PressPointPos, Vector3.Normalize(PressPointLaser - PressPointPos), Vector3.Distance(PressPointPos, PressPointLaser), VirusMask))
         {
             //Virus消すスクリプト
+            VirusOccurenceDicision = false;
         }
     }
 
@@ -177,14 +185,21 @@ public class GameManager : MonoBehaviour {
                 PressPointPos = Camera.main.ScreenToWorldPoint(x);
                 PressPointPos.z = -10;
             }).AddTo(this);
-        Vector3 PressPointLaser = new Vector3(PressPointPos.x, PressPointPos.y, -1);
+        Vector3 PressPointLaser = new Vector3(PressPointPos.x, PressPointPos.y, 89);
         Debug.DrawLine(PressPointPos, PressPointLaser, Color.red);
-        if (Physics.Raycast(PressPointPos, Vector3.Normalize(PressPointLaser - PressPointPos), Vector3.Distance(PressPointPos, PressPointLaser), VirusMask))
+        RaycastHit hit;
+        if (Physics.Raycast(PressPointPos, Vector3.Normalize(PressPointLaser - PressPointPos),out hit, Vector3.Distance(PressPointPos, PressPointLaser), VirusMask))
         {
+            Debug.Log("b");
+            Scaling SC = hit.collider.gameObject.GetComponent<Scaling>();
+            SC.StateChangePinching();
+            /*
             InputManager.OnPinching
                 .Subscribe(scroll =>{
+                   
                     //
             }).AddTo(this);
+            */
         }
     }
 
