@@ -29,22 +29,6 @@ public class GimmickManager : SingletonMonoBehaviour<GimmickManager>
 	}
 
     /// <summary>
-    /// animeation を始めるタイミング
-    /// </summary>
-    public void AnimetionStart()
-    {
-
-    }
-
-    /// <summary>
-    /// animetionを止めるタイミング
-    /// </summary>
-    public void AnimetionStop()
-    {
-
-    }
-
-    /// <summary>
     /// sound を開始する
     /// </summary>
     public void SoundStart(int number)
@@ -73,6 +57,9 @@ public class GimmickManager : SingletonMonoBehaviour<GimmickManager>
         }
     }
 
+    /// <summary>
+    /// 死亡
+    /// </summary>
     public void Dath()
     {
         Destroy(gameObject);
