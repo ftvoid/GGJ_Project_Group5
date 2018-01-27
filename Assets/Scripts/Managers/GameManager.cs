@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 using UniRx;
 using System;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : SingletonMonoBehaviour<GameManager>
+{
     [SerializeField]
     private float RemainTime;
 
@@ -33,14 +34,14 @@ public class GameManager : MonoBehaviour {
     public float VirusRemainTimer;
 
     /// <summary>
-    /// クリアシーン名
+    /// クリアUI
     /// </summary>
-    public string ClearScene;
+    public GameObject ClearScene;
 
     /// <summary>
-    /// ゲームオーバーシーン名
+    /// ゲームオーバーUI
     /// </summary>
-    public string GameOverScene;
+    public GameObject GameOverScene;
 
     /// <summary>
     /// VirusのLayer
@@ -50,11 +51,51 @@ public class GameManager : MonoBehaviour {
     /// <summary>
     /// マウスの箇所取得
     /// </summary>
-    private Vector3 PressPointPos = new Vector3(100,100,100);
-    void Start ()
+    /// 
+    private Vector3 PressPointPos = new Vector3(100, 100, 100);
+
+    /// <summary>
+    /// E-mailの送信までのタイム
+    /// </summary>
+    [SerializeField]
+    private float EmailRemainTime;
+
+    /// <summary>
+    /// E-mailの種類
+    /// </summary>
+    [SerializeField]
+    private bool GoodOrBad;
+
+    [SerializeField]
+    private ReactiveProperty<float> VirusMemoryAttackDamage = new ReactiveProperty<float>(0);
+
+    public IObservable<float> VirusMemoryDamage => VirusMemoryAttackDamage;
+
+    public float AttackDamage
+    {
+        get { return VirusMemoryAttackDamage.Value; }
+        set { VirusMemoryAttackDamage.Value = value; }
+    }
+
+    /// <summary>
+    /// 悪いメールのウィルスブーストの時間
+    /// </summary>
+    public float BadMailRemainTimer;
+
+    /// <summary>
+    /// 悪いメールのウィルス状態
+    /// </summary>
+    public bool BadMailNow;
+
+    /// <summary>
+    /// 体力の最大値
+    /// </summary>
+    public float MaxHP;
+    void Start()
     {
         RemainTime = DataManager.Instance.RemainTime;
         HP = DataManager.Instance.HP;
+        MaxHP = DataManager.Instance.HP;
         /*
         InputManager.OnBeginSwipe
             .Take(5)
@@ -63,16 +104,24 @@ public class GameManager : MonoBehaviour {
         }).AddTo(this);
         */
         VirusRemainTimer = UnityEngine.Random.Range(8, 12);
+
+        EmailRemainTime = UnityEngine.Random.Range(30, 40);
+
+        BadMailNow = false;
     }
 
     void Update()
     {
+        VirusAttackToPC();
+        VirusMemoryAttackDamage.Value = 0;
         PressHitDecision();
         Pinch();
-        VirusAttackToPC();
+
         TimeDegrease();
-        
+
         VirusInstiateTimer();
+
+        BadMailTimer();
 
         /*
         if ()
@@ -80,37 +129,41 @@ public class GameManager : MonoBehaviour {
         81
         }
         */
+
     }
 
     public void VirusInstantiate()
     {
         int i = UnityEngine.Random.Range(0, Virus.Length);
         Instantiate(Virus[i], VirusTransform[i].position, Virus[i].transform.rotation);
-        VirusRemainTimer = UnityEngine.Random.Range(8, 12);
+        if (BadMailNow == true) VirusRemainTimer = UnityEngine.Random.Range(4, 6);
+        else
+        {
+            VirusRemainTimer = UnityEngine.Random.Range(8, 12);
+        }
         VirusOccurenceDicision = true;
         //ウィルスのアニメや音の再生関数
     }
 
     public void VirusActionEnd()
 
-        {//ウィルスの動きを止める関数呼びだし        
+    {//ウィルスの動きを止める関数呼びだし        
         GameObject[] VirusNum;
         VirusNum = GameObject.FindGameObjectsWithTag("Virus");
         if (VirusNum.Length == 0)
         {
             VirusOccurenceDicision = false;
         }
-        
+
     }
 
     public void VirusAttackToPC()
     {
-        if (VirusOccurenceDicision == true) 
+        if (VirusOccurenceDicision == true)
         {
-            GameObject[] VirusNum;
-            VirusNum = GameObject.FindGameObjectsWithTag("Virus");
-            HP -= VirusNum.Length;
-            if (HP <=0.0f)
+            HP -= VirusMemoryAttackDamage.Value;
+            DataManager.Instance.HP = HP;
+            if (HP <= 0.0f)
             {
                 HPBecomeZero();
             }
@@ -119,12 +172,12 @@ public class GameManager : MonoBehaviour {
 
     public void HPBecomeZero()
     {
-        SceneManager.LoadScene(GameOverScene);
+        GameOverScene.SetActive(true);
     }
 
     public void GameClearScene()
     {
-        SceneManager.LoadScene(ClearScene);
+        ClearScene.SetActive(true);
     }
 
     public void TimeDegrease()
@@ -139,7 +192,8 @@ public class GameManager : MonoBehaviour {
     public void VirusInstiateTimer()
     {
         VirusRemainTimer -= Time.deltaTime;
-        if (VirusRemainTimer <=0)
+        DataManager.Instance.RemainTime = VirusRemainTimer;
+        if (VirusRemainTimer <= 0)
         {
             VirusInstantiate();
         }
@@ -147,15 +201,15 @@ public class GameManager : MonoBehaviour {
 
     public void PressHitDecision()
     {
-        
+
         InputManager.OnPress
             .Subscribe(x => {
                 PressPointPos = Camera.main.ScreenToWorldPoint(x);
                 PressPointPos.z = -10;
-            }).AddTo(this);        
+            }).AddTo(this);
         Vector3 PressPointLaser = new Vector3(PressPointPos.x, PressPointPos.y, 89);
-        Debug.DrawLine(PressPointPos,PressPointLaser,Color.red);
-        if (Physics.Raycast(PressPointPos,Vector3.Normalize(PressPointLaser - PressPointPos),Vector3.Distance(PressPointPos,PressPointLaser),VirusMask))
+        Debug.DrawLine(PressPointPos, PressPointLaser, Color.red);
+        if (Physics.Raycast(PressPointPos, Vector3.Normalize(PressPointLaser - PressPointPos), Vector3.Distance(PressPointPos, PressPointLaser), VirusMask))
         {
             //Virus消すスクリプト
             VirusOccurenceDicision = false;
@@ -188,7 +242,7 @@ public class GameManager : MonoBehaviour {
         Vector3 PressPointLaser = new Vector3(PressPointPos.x, PressPointPos.y, 89);
         Debug.DrawLine(PressPointPos, PressPointLaser, Color.red);
         RaycastHit hit;
-        if (Physics.Raycast(PressPointPos, Vector3.Normalize(PressPointLaser - PressPointPos),out hit, Vector3.Distance(PressPointPos, PressPointLaser), VirusMask))
+        if (Physics.Raycast(PressPointPos, Vector3.Normalize(PressPointLaser - PressPointPos), out hit, Vector3.Distance(PressPointPos, PressPointLaser), VirusMask))
         {
             Debug.Log("b");
             Scaling SC = hit.collider.gameObject.GetComponent<Scaling>();
@@ -203,5 +257,61 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void EmailAppend()
+    {
+        EmailRemainTime -= Time.deltaTime;
+        if (EmailRemainTime <= 0)
+        {
+            EmailLottery();
+            EmailRemainTime = UnityEngine.Random.Range(30, 40);
+        }
+    }
+
+    public void EmailLottery()
+    {
+        int i = UnityEngine.Random.Range(0, 100);
+        if (i >= 80)
+        {
+            BadMailAppear();
+        }
+        else if (i < 80)
+        {
+            GoodMailAppear();
+        }
+
+    }
+
+    public void GoodMailAppear()
+    {
+        GameObject[] VirusNum;
+        VirusNum = GameObject.FindGameObjectsWithTag("Virus");
+        for (int i = 0; i < VirusNum.Length; i++)
+        {
+            Destroy(VirusNum[i]);
+        }
+        VirusRemainTimer = UnityEngine.Random.Range(20, 25);
+    }
+
+    public void BadMailAppear()
+    {
+        VirusInstantiate();
+        VirusRemainTimer = UnityEngine.Random.Range(4, 6);
+        BadMailRemainTimer = 5.0f;
+        BadMailNow = true;
+    }
+
+    public void BadMailTimer()
+    {
+        if (BadMailNow == true)
+        {
+            BadMailRemainTimer -= Time.deltaTime;
+            if (BadMailRemainTimer <= 0)
+            {
+                BadMailNow = false;
+            }
+        }
+    }
+
 
 }
+
