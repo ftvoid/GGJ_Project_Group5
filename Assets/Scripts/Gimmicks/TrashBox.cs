@@ -16,15 +16,33 @@ public class TrashBox : MonoBehaviour {
     [Header("ふたが震える時間(s)")]
     private float _shakeDuration = 5;
 
+    private Tweener _shakePos;
+    private Tweener _shakeRot;
+
     private void Start() {
         Damage();
+        //StopShake();
     }
 
     /// <summary>
     /// ゴミ箱がダメージを受ける
     /// </summary>
     public void Damage() {
-        _cover.DOShakePosition(_shakeDuration, 0.2f, 10, 90, false, false);
-        _cover.DOShakeRotation(_shakeDuration, 15, 10, 90, false);
+        _shakePos = _cover.DOShakePosition(_shakeDuration, 0.2f, 10, 90, false, false);
+        _shakeRot = _cover.DOShakeRotation(_shakeDuration, 15, 10, 90, false);
+    }
+
+    /// <summary>
+    /// ゴミ箱の振動を止める
+    /// </summary>
+    public void StopShake() {
+        if ( _shakePos != null ) {
+            _shakePos.Complete();
+            _shakePos = null;
+        }
+        if ( _shakeRot != null ) {
+            _shakeRot.Complete();
+            _shakeRot = null;
+        }
     }
 }

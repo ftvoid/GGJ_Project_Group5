@@ -113,7 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cover: {fileID: 4708164846459756}
   _body: {fileID: 4097965350634758}
-  _shakeDuration: 10
+  _shakeDuration: 100000
 --- !u!212 &212255531959072952
 SpriteRenderer:
   m_ObjectHideFlags: 1
