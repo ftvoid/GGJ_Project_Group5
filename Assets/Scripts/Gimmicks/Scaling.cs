@@ -67,7 +67,7 @@ public class Scaling : MonoBehaviour
                 if (myscale.transform.localScale.x <= pinch_size)
                 {
                     _state = State.Stop;
-                    GimmickManager.Instance.SoundStart(7);
+                    GimmickManager.Instance.SoundStart(16);
                     GameManager.Instance.AttackDamage -= Damage;
                     Destroy(gameObject);
                 }
