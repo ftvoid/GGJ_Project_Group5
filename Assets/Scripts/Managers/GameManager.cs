@@ -156,6 +156,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         BadMailAnim.SetBool("MailAinmBool", true);
 
         VirusMemoryAttackDamage.Subscribe(x => VirusAttackToPC());
+
+        StartCoroutine(InitInternal());
+    }
+
+    IEnumerator InitInternal()
+    {
+        yield return new WaitForEndOfFrame();
+        InputManager.OnPress.Subscribe(_ => GimmickManager.Instance.SoundStart(11)).AddTo(this);
     }
 
     void Update()
@@ -433,6 +441,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         if (i >= 80)
         {
             BadMailAnim.SetBool("MailAinmBool", false);
+            
             MailCanTapTime = 5.0f;
         }
         else if (i < 80)
@@ -440,6 +449,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             GoodMailAnim.SetBool("MailAinmBool", false);
             MailCanTapTime = 5.0f;
         }
+        GimmickManager.instance.SoundStart(1);
 
     }
 
@@ -462,6 +472,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     {
         InputManager.OnPress
             .Subscribe(x => {
+                GimmickManager.instance.SoundStart(3);
                 PressPointPos = Camera.main.ScreenToWorldPoint(x);
                 PressPointPos.z = -10;
             }).AddTo(this);
@@ -497,6 +508,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         {
             if (BadMailNow == false)
             {
+                GimmickManager.instance.SoundStart(2);
                 VirusInstantiate();
                 VirusRemainTimer = UnityEngine.Random.Range(4, 6);
                 BadMailRemainTimer = 5.0f;

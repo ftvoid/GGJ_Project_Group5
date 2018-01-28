@@ -32,7 +32,6 @@ public class TrashBox : MonoBehaviour {
     public GameObject _trash;
 
     private void Start() {
-        GimmickManager.Instance.SoundLopeStart(4);
         Damage();
         //StopShake();
         StartCoroutine("InstanceGarbage");
@@ -57,6 +56,12 @@ public class TrashBox : MonoBehaviour {
     /// <returns></returns>
     private IEnumerator InstanceGarbage() 
     {
+        yield return new WaitForEndOfFrame();
+
+        Debug.Log("上");
+        GimmickManager.Instance.SoundLopeStart(4);
+        Debug.Log("下");
+
         for (int i = 0; i < _trashLoop; i++)
         {
             yield return new WaitForSeconds(_coolTime);
