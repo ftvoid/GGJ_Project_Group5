@@ -133,6 +133,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         GF.intensity = 0;
 
         InputManager.OnPress.Subscribe(_ => GimmickManager.Instance.SoundStart(13)).AddTo(this);
+
+        PressHitDecision();
     }
 
     void Update()
@@ -141,7 +143,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
         if (HP >= 0)
         {
-            PressHitDecision();
+            //PressHitDecision();
             Pinch();
 
             TimeDegrease();
@@ -242,25 +244,35 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     public void PressHitDecision()
     {
-
         InputManager.OnPress
             .Subscribe(x => {
                 PressPointPos = Camera.main.ScreenToWorldPoint(x);
                 PressPointPos.z = -10;
-            }).AddTo(this);
-        Vector3 PressPointLaser = new Vector3(PressPointPos.x, PressPointPos.y, 89);
-        Debug.DrawLine(PressPointPos, PressPointLaser, Color.red);
-        RaycastHit hit;
-        if (Physics.Raycast(PressPointPos, Vector3.Normalize(PressPointLaser - PressPointPos), out hit, VirusMask))
-        {
-            //Virus消すスクリプト
-            VirusOccurenceDicision = false;
 
-            var sc = hit.collider.gameObject.GetComponent<Scaling>();
-            if ( sc != null ) {
-                sc.StateChangePinching(0);
-            }
-        }
+                Vector3 PressPointLaser = new Vector3(PressPointPos.x, PressPointPos.y, 89);
+                Debug.DrawLine(PressPointPos, PressPointLaser, Color.red);
+
+                Collider2D col = Physics2D.OverlapPoint(PressPointPos, VirusMask);
+                if ( col != null ) {
+                    //Virus消すスクリプト
+                    VirusOccurenceDicision = false;
+
+                    // 爆弾判定
+                    var sc = col.GetComponent<Scaling>();
+                    if ( sc != null ) {
+                        sc.StateChangePinching(0);
+                    }
+
+                    var ball = col.GetComponent<Bound_ball>();
+                    if ( ball != null ) {
+                        Debug.Log("obj.GetComponent<Bound_ball>()");
+                        Destroy(col.gameObject);
+                        return;
+                    }
+                }
+
+                Debug.Log("InputManager.OnPress");
+            }).AddTo(this);
     }
 
     public void ReleaseHitDecision()
