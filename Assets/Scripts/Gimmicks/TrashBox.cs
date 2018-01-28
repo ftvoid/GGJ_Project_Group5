@@ -32,6 +32,7 @@ public class TrashBox : MonoBehaviour {
     public GameObject _trash;
 
     private void Start() {
+        GimmickManager.Instance.SoundLopeStart(4);
         Damage();
         //StopShake();
         StartCoroutine("InstanceGarbage");

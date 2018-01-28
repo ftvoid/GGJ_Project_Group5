@@ -10,6 +10,7 @@ public class Trash : MonoBehaviour {
     }
 
     private void OnDestroy() {
+        GimmickManager.Instance.SoundStart(17);
         GameManager.Instance.AttackDamage -= Damage;
     }
 }
