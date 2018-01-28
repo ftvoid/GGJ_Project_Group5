@@ -142,7 +142,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         */
         VirusRemainTimer = UnityEngine.Random.Range(8, 12);
 
-        EmailRemainTime = UnityEngine.Random.Range(30, 40);
+        EmailRemainTime = UnityEngine.Random.Range(3, 4);
 
         BadMailNow = false;
         GF = GetComponent<GlitchFx>();
@@ -481,6 +481,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         if (Physics.Raycast(PressPointPos, Vector3.Normalize(PressPointLaser - PressPointPos), Vector3.Distance(PressPointPos, PressPointLaser), GoodMailLayerMask))
         {
             GoodMailAnim.SetBool("MailAinmBool", true);
+            HP = MaxHP;
             GameObject[] VirusNum;
             VirusNum = GameObject.FindGameObjectsWithTag("Virus");
             for (int i = 0; i < VirusNum.Length; i++)
