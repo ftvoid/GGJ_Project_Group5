@@ -106,7 +106,17 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     /// <summary>
     /// BackGroundの色
     /// </summary>
-    public Image BackGround; 
+    public Image BackGround;
+
+    /// <summary>
+    /// メールのLayer
+    ///</summary>>
+    public LayerMask GoodMailLayerMask;
+    public LayerMask BadMailLayerMask;
+
+    public Animator GoodMailAnim;
+
+    public Animator BadMailAnim;
 
     GlitchFx GF;
     void Start()
@@ -135,6 +145,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         InputManager.OnPress.Subscribe(_ => GimmickManager.Instance.SoundStart(13)).AddTo(this);
 
         PressHitDecision();
+
+        GoodMailAnim.SetBool("MailAinmBool", true);
+        BadMailAnim.SetBool("MailAinmBool", true);
     }
 
     void Update()
@@ -215,12 +228,27 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     public void HPBecomeZero()
     {
+        GF.intensity = 0;
+        GameObject[] VirusNum;
+        VirusNum = GameObject.FindGameObjectsWithTag("Virus");
+        for (int i = 0; i < VirusNum.Length; i++)
+        {
+            Destroy(VirusNum[i]);
+        }
         GameOverScene.SetActive(true);
+
     }
 
     public void GameClearScene()
     {
+        GameObject[] VirusNum;
+        VirusNum = GameObject.FindGameObjectsWithTag("Virus");
+        for (int i = 0; i < VirusNum.Length; i++)
+        {
+            Destroy(VirusNum[i]);
+        }
         ClearScene.SetActive(true);
+        
     }
 
     public void TimeDegrease()
@@ -351,6 +379,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         if (EmailRemainTime <= 0)
         {
             EmailLottery();
+            MailComeFlag = true;
             EmailRemainTime = UnityEngine.Random.Range(30, 40);
         }
     }
@@ -360,12 +389,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         int i = UnityEngine.Random.Range(0, 100);
         if (i >= 80)
         {
-            BadMailAppear();
+            BadMailAnim.SetBool("MailAinmBool", false);
             MailCanTapTime = 5.0f;
         }
         else if (i < 80)
         {
-            GoodMailAppear();
+            GoodMailAnim.SetBool("MailAinmBool", false);
             MailCanTapTime = 5.0f;
         }
 
@@ -373,30 +402,65 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     public void MailAppearTimer()
     {
+        BadMailAppear();
+        GoodMailAppear();
+
         MailCanTapTime -= Time.deltaTime;
-        if (MailCanTapTime <=0)
+        if (MailCanTapTime <= 0)
         {
+            if(MailComeFlag == true)GoodMailAnim.SetBool("MailAinmBool", true);
             MailComeFlag = false;
+            
+            MailCanTapTime = 5.0f;
         }
     }
 
     public void GoodMailAppear()
     {
-        GameObject[] VirusNum;
-        VirusNum = GameObject.FindGameObjectsWithTag("Virus");
-        for (int i = 0; i < VirusNum.Length; i++)
+        InputManager.OnPress
+            .Subscribe(x => {
+                PressPointPos = Camera.main.ScreenToWorldPoint(x);
+                PressPointPos.z = -10;
+            }).AddTo(this);
+        Vector3 PressPointLaser = new Vector3(PressPointPos.x, PressPointPos.y, 0);
+        Debug.DrawLine(PressPointPos, PressPointLaser, Color.yellow);
+        if (Physics.Raycast(PressPointPos, Vector3.Normalize(PressPointLaser - PressPointPos), Vector3.Distance(PressPointPos, PressPointLaser), GoodMailLayerMask))
         {
-            Destroy(VirusNum[i]);
+            GoodMailAnim.SetBool("MailAinmBool", true);
+            GameObject[] VirusNum;
+            VirusNum = GameObject.FindGameObjectsWithTag("Virus");
+            for (int i = 0; i < VirusNum.Length; i++)
+            {
+                Destroy(VirusNum[i]);
+            }
+            VirusRemainTimer = UnityEngine.Random.Range(20, 25);
         }
-        VirusRemainTimer = UnityEngine.Random.Range(20, 25);
     }
 
     public void BadMailAppear()
     {
-        VirusInstantiate();
-        VirusRemainTimer = UnityEngine.Random.Range(4, 6);
-        BadMailRemainTimer = 5.0f;
-        BadMailNow = true;
+        InputManager.OnPress
+            .Subscribe(x => {
+                PressPointPos = Camera.main.ScreenToWorldPoint(x);
+                PressPointPos.z = -10;
+            }).AddTo(this);
+        Vector3 PressPointLaser = new Vector3(PressPointPos.x, PressPointPos.y, 0);
+        Debug.DrawLine(PressPointPos, PressPointLaser, Color.yellow);
+        if (Physics.Raycast(PressPointPos, Vector3.Normalize(PressPointLaser - PressPointPos), Vector3.Distance(PressPointPos, PressPointLaser), BadMailLayerMask))
+        {
+            if (BadMailNow == false)
+            {
+                VirusInstantiate();
+                VirusRemainTimer = UnityEngine.Random.Range(4, 6);
+                BadMailRemainTimer = 5.0f;
+                BadMailNow = true;
+                Debug.Log("BagMail");
+                BadMailAnim.SetBool("MailAinmBool", true);
+            }
+
+
+
+        }
     }
 
     public void BadMailTimer()
@@ -408,6 +472,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             {
                 BadMailNow = false;
             }
+        }
+        else
+        {
+            BadMailRemainTimer = 5.0f; ;
         }
     }
 
