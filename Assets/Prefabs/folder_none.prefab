@@ -22,9 +22,9 @@ GameObject:
   - component: {fileID: 212361349199684692}
   - component: {fileID: 114349433512412410}
   - component: {fileID: 61181380357302388}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: folder_none
-  m_TagString: Untagged
+  m_TagString: Virus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -78,6 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf433720d3b20c04a97308e73ab89e97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Damage: 50
 --- !u!212 &212361349199684692
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4033599763215588}
   - component: {fileID: 212420126910001028}
   - component: {fileID: 114696525758895602}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: folder
-  m_TagString: Untagged
+  m_TagString: Virus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
