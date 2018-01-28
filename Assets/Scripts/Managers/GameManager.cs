@@ -131,6 +131,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         BadMailNow = false;
         GF = GetComponent<GlitchFx>();
         GF.intensity = 0;
+
+        InputManager.OnPress.Subscribe(_ => GimmickManager.Instance.SoundStart(13)).AddTo(this);
     }
 
     void Update()
@@ -198,8 +200,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         {            
             HP -= VirusMemoryAttackDamage.Value;
             GF.intensity = 1 - HP / MaxHP;
-            float ColorGain = 255 * (HP / MaxHP); 
-            BackGround.color = new Color(255, ColorGain, ColorGain);
+            float ColorGain = (HP / MaxHP); 
+            //BackGround.color = new Color(255, ColorGain, ColorGain);
+            Camera.main.backgroundColor = new Color(1, ColorGain, ColorGain);
             DataManager.Instance.HP = HP;
             if (HP <= 0.0f)
             {
