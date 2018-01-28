@@ -243,7 +243,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             Destroy(VirusNum[i]);
         }
         GameOverScene.SetActive(true);
-
+        InputManager
+            .OnPress
+            .Subscribe(_ => SceneManager.LoadScene(0))
+            .AddTo(this);
     }
 
     public void GameClearScene()
@@ -255,7 +258,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             Destroy(VirusNum[i]);
         }
         ClearScene.SetActive(true);
-        
+        InputManager
+            .OnPress
+            .Subscribe(_ => SceneManager.LoadScene(0))
+            .AddTo(this);
     }
 
     public void TimeDegrease()
