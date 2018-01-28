@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Folder_Destroy : MonoBehaviour
 {
+    Ray ray;
+    Ray mouseRay;
 
 	// Use this for initialization
 	void Start ()
@@ -14,10 +16,11 @@ public class Folder_Destroy : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+
         GameObject obj = GetclickObj();
         if (obj != null)
         {
-            Destroy(this.gameObject);
+            GameObject.Destroy(this.gameObject);
         }
 
     }
@@ -37,4 +40,5 @@ public class Folder_Destroy : MonoBehaviour
         }
         return result;
     }
+
 }

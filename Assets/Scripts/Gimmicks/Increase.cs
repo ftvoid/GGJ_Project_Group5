@@ -39,18 +39,43 @@ public class Increase : MonoBehaviour
             case State.Start:
                 if (time >= timeout)
                 {
-                    Instantiate(increase, new Vector3(Random.Range(-7.5f,7.5f),Random.Range(-4.0f,4.0f),0) , transform.rotation);
+                    //Instantiate(increase, new Vector3(Random.Range(-7.5f,7.5f),Random.Range(-4.0f,4.0f),0) , transform.rotation);
+                    CloneBound();
                     time = 0.0f;
                 }
                 break;
             case State.Touch:
-                if (InputManager.IsPress)
-                {
-                    _state = State.Stop;
-                }
+                TouchStateChange();
                 break;
 
 
         }
+    }
+
+    public void TouchStateChange()
+    {
+        _state = State.Stop;
+    }
+
+    //private GameObject GetclickObj()
+    //{
+    //    GameObject result = null;
+    //    // 左クリックされた場所のオブジェクトを取得
+    //    if (InputManager.IsDown)
+    //    {
+    //        Vector2 tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    //        Collider2D collider = Physics2D.OverlapPoint(tapPoint);
+    //        if (collider)
+    //        {
+    //            result = collider.transform.gameObject;
+    //        }
+    //    }
+    //    return result;
+    //}
+
+    private GameObject CloneBound()
+    {
+        GameObject clonebound = Instantiate(increase, new Vector3(Random.Range(-7.5f, 7.5f), Random.Range(-4.0f, 4.0f), 0), transform.rotation);
+        return clonebound;
     }
 }
