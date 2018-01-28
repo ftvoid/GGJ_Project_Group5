@@ -10,6 +10,7 @@ public class Folder_Destroy : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        GimmickManager.Instance.SoundStart(14);
         GameManager.Instance.AttackDamage += Damage;
     }
 
