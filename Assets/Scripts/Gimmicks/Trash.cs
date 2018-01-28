@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Trash : MonoBehaviour {
+    public float Damage = 50;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    private void Start() {
+        GameManager.Instance.AttackDamage += Damage;
+    }
+
+    private void OnDestroy() {
+        GameManager.Instance.AttackDamage -= Damage;
+    }
 }
