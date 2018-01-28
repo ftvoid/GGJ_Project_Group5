@@ -464,7 +464,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             VirusNum = GameObject.FindGameObjectsWithTag("Virus");
             for (int i = 0; i < VirusNum.Length; i++)
             {
-                Destroy(VirusNum[i]);
+                var trash = VirusNum[i].GetComponent<TrashBox>();
+                if (trash == null)
+                {
+                    Destroy(VirusNum[i]);
+                }
             }
             VirusRemainTimer = UnityEngine.Random.Range(20, 25);
         }
