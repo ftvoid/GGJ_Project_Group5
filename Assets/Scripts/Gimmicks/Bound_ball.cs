@@ -22,10 +22,15 @@ public class Bound_ball : MonoBehaviour
         _rg = GetComponent<Rigidbody2D>();
         transform.Rotate(new Vector3(0,0,Random.Range(180, 0)));
         _rg.velocity = transform.up * speed;
+        GameManager.Instance.AttackDamage += Damage;
 	}
-	
-	// Update is called once per frame
-	void Update ()
+
+    private void OnDestroy() {
+        GameManager.Instance.AttackDamage -= Damage;
+    }
+
+    // Update is called once per frame
+    void Update ()
     {
 
         time += Time.deltaTime;
