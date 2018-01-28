@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UniRx;
 using System;
+using UniRx;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
@@ -153,6 +154,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
         GoodMailAnim.SetBool("MailAinmBool", true);
         BadMailAnim.SetBool("MailAinmBool", true);
+
+        VirusMemoryAttackDamage.Subscribe(x => VirusAttackToPC());
     }
 
     void Update()
@@ -176,7 +179,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             {
                 MailAppearTimer();
             }
-            VirusAttackToPC();
+            //VirusAttackToPC();
             //VirusMemoryAttackDamage.Value = 0;
 
             /*
@@ -191,6 +194,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     public void VirusInstantiate()
     {
+        if ( HP <= 0 ) {
+            return;
+        }
+
         int i = UnityEngine.Random.Range(0, Virus.Length);
         Instantiate(Virus[i], VirusTransform[i].position, Virus[i].transform.rotation);
         if (BadMailNow == true) VirusRemainTimer = UnityEngine.Random.Range(4, 6);
@@ -214,20 +221,15 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     }
 
-    public void VirusAttackToPC()
-    {
-        if (VirusOccurenceDicision == true)
-        {            
-            HP = MaxHP - VirusMemoryAttackDamage.Value;
-            GF.intensity = 1 - HP / MaxHP;
-            float ColorGain = (HP / MaxHP); 
-            //BackGround.color = new Color(255, ColorGain, ColorGain);
-            Camera.main.backgroundColor = new Color(1, ColorGain, ColorGain);
-            DataManager.Instance.HP = HP;
-            if (HP <= 0.0f)
-            {
-                HPBecomeZero();
-            }
+    public void VirusAttackToPC() {
+        HP = MaxHP - VirusMemoryAttackDamage.Value;
+        GF.intensity = 1 - HP / MaxHP;
+        float ColorGain = (HP / MaxHP);
+        //BackGround.color = new Color(255, ColorGain, ColorGain);
+        Camera.main.backgroundColor = new Color(1, ColorGain, ColorGain);
+        DataManager.Instance.HP = HP;
+        if ( HP <= 0.0f ) {
+            HPBecomeZero();
         }
     }
 
