@@ -226,7 +226,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         GF.intensity = 1 - HP / MaxHP;
         float ColorGain = (HP / MaxHP);
         //BackGround.color = new Color(255, ColorGain, ColorGain);
-        Camera.main.backgroundColor = new Color(1, ColorGain, ColorGain);
+        var from = new Color(49f / 255, 77f / 255, 121f / 255);
+        var to = new Color(255f / 255, 0, 0);
+        //Camera.main.backgroundColor = new Color(1, ColorGain, ColorGain);
+        Camera.main.backgroundColor = Color.Lerp(to, from, ColorGain);
         DataManager.Instance.HP = HP;
         if ( HP <= 0.0f ) {
             HPBecomeZero();
