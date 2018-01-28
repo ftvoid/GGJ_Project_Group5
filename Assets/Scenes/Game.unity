@@ -625,7 +625,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 182d1c8b02ddbde458778dda1514cdbe, type: 3}
     m_FontSize: 80
     m_FontStyle: 0
     m_BestFit: 0
@@ -1013,6 +1013,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 02e579c6f0af89449a7eebf96f9e5f11, type: 3}
   - {fileID: 8300000, guid: 208042bfee290cf4485c04329d3e421f, type: 3}
   - {fileID: 8300000, guid: 62d83396b906c344e804dbd804b14a57, type: 3}
+  - {fileID: 8300000, guid: 0c504a725f527a44c9c9d3e73ad757e8, type: 3}
+  - {fileID: 8300000, guid: 02e579c6f0af89449a7eebf96f9e5f11, type: 3}
+  - {fileID: 8300000, guid: f31d1121f886b8041b665e07878867ab, type: 3}
+  - {fileID: 8300000, guid: 62d83396b906c344e804dbd804b14a57, type: 3}
 --- !u!4 &791603378
 Transform:
   m_ObjectHideFlags: 0
@@ -1025,6 +1029,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &897062413
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 2141787428}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 897062414}
+  m_Layer: 0
+  m_Name: Missing Prefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &897062414
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 2141787428}
+  m_GameObject: {fileID: 897062413}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1186870063
 GameObject:
@@ -1998,7 +2030,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2039438598
 MonoBehaviour:
@@ -2160,7 +2192,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4983875247174990, guid: fa1c9237582cdd04b88a6b72c64d9d03, type: 2}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fa1c9237582cdd04b88a6b72c64d9d03, type: 2}

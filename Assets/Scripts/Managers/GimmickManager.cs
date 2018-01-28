@@ -10,7 +10,7 @@ public class GimmickManager : SingletonMonoBehaviour<GimmickManager>
     protected override void Awake()
     {
         base.Awake();
-
+        
         //GameObject[] obj = GameObject.FindGameObjectsWithTag("Virus");
         //if(obj.Length > 1)
         //{
@@ -25,6 +25,7 @@ public class GimmickManager : SingletonMonoBehaviour<GimmickManager>
         {
             SEsources[i] = gameObject.AddComponent<AudioSource>();
         }
+        AudioTuning();
 
 	}
 
@@ -77,4 +78,22 @@ public class GimmickManager : SingletonMonoBehaviour<GimmickManager>
         Destroy(gameObject);
     }
 
+    private void AudioTuning()
+    {
+        SEsources[0].volume = 0.355f;
+        SEsources[1].volume = 1;
+        SEsources[2].volume = 1;
+        SEsources[3].volume = 1;
+        SEsources[4].volume = 1;
+        SEsources[5].volume = 0.1f;
+        SEsources[6].volume = 1;
+        SEsources[7].volume = 1;
+        SEsources[8].volume = 1;
+        SEsources[9].volume = 0.5f;
+        SEsources[10].volume = 1;
+        SEsources[11].volume = 0.8f;
+        SEsources[12].volume = 0.5f;
+        SEsources[13].volume = 0.5f;
+        SEsources[14].volume = 0.15f;
+    }
 }
