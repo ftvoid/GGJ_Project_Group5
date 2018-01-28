@@ -63,7 +63,7 @@ public class Scaling : MonoBehaviour
                 }
                 break;
             case State.ScaleDown:
-                //myscale.transform.localScale -= new Vector3(1, 1, 0) * Time.deltaTime * speed;
+                myscale.transform.localScale -= new Vector3(1, 1, 0) * Time.deltaTime * speed;
                 if (myscale.transform.localScale.x <= pinch_size)
                 {
                     _state = State.Stop;

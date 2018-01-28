@@ -250,10 +250,16 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             }).AddTo(this);
         Vector3 PressPointLaser = new Vector3(PressPointPos.x, PressPointPos.y, 89);
         Debug.DrawLine(PressPointPos, PressPointLaser, Color.red);
-        if (Physics.Raycast(PressPointPos, Vector3.Normalize(PressPointLaser - PressPointPos), Vector3.Distance(PressPointPos, PressPointLaser), VirusMask))
+        RaycastHit hit;
+        if (Physics.Raycast(PressPointPos, Vector3.Normalize(PressPointLaser - PressPointPos), out hit, VirusMask))
         {
             //Virus消すスクリプト
             VirusOccurenceDicision = false;
+
+            var sc = hit.collider.gameObject.GetComponent<Scaling>();
+            if ( sc != null ) {
+                sc.StateChangePinching(0);
+            }
         }
     }
 
@@ -286,20 +292,20 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             ).AddTo(this);
 
         
-        Vector3 PressPointLaser = new Vector3(PressPointPos.x, PressPointPos.y, 89);
-        Debug.DrawLine(PressPointPos, PressPointLaser, Color.red);
-        RaycastHit hit;
-        Scaling SC = null;
-        if (Physics.Raycast(PressPointPos, Vector3.Normalize(PressPointLaser - PressPointPos), out hit, Vector3.Distance(PressPointPos, PressPointLaser), VirusMask))
-        {
-            SC = hit.collider.gameObject.GetComponent<Scaling>();
-        }
-            InputManager.OnPinching
-            .Subscribe(Scroller =>
-            {
-                i = Scroller;                
-                SC.StateChangePinching(i);
-            }).AddTo(this);
+        //Vector3 PressPointLaser = new Vector3(PressPointPos.x, PressPointPos.y, 89);
+        //Debug.DrawLine(PressPointPos, PressPointLaser, Color.red);
+        //RaycastHit hit;
+        //Scaling SC = null;
+        //if (Physics.Raycast(PressPointPos, Vector3.Normalize(PressPointLaser - PressPointPos), out hit, Vector3.Distance(PressPointPos, PressPointLaser), VirusMask))
+        //{
+        //    SC = hit.collider.gameObject.GetComponent<Scaling>();
+        //}
+        //    InputManager.OnPinching
+        //    .Subscribe(Scroller =>
+        //    {
+        //        i = Scroller;                
+        //        SC.StateChangePinching(i);
+        //    }).AddTo(this);
          
         /*
         InputManager.OnPress
