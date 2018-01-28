@@ -10,9 +10,9 @@ public class GimmickManager : SingletonMonoBehaviour<GimmickManager>
     protected override void Awake()
     {
         base.Awake();
-        
+
         //GameObject[] obj = GameObject.FindGameObjectsWithTag("Virus");
-        //if(obj.Length > 1)
+        //if (obj.Length > 1)
         //{
         //    Destroy(gameObject);
         //}
@@ -21,7 +21,7 @@ public class GimmickManager : SingletonMonoBehaviour<GimmickManager>
         //    DontDestroyOnLoad(gameObject);
         //}
 
-        for(int i = 0; i < SEsources.Length; i++)
+        for (int i = 0; i < SEsources.Length; i++)
         {
             SEsources[i] = gameObject.AddComponent<AudioSource>();
         }

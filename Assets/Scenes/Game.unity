@@ -984,7 +984,7 @@ GameObject:
   - component: {fileID: 791603377}
   m_Layer: 0
   m_Name: GimmickManager
-  m_TagString: Virus
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1934,7 +1934,6 @@ GameObject:
   - component: {fileID: 2039438600}
   - component: {fileID: 2039438599}
   - component: {fileID: 2039438598}
-  - component: {fileID: 2039438601}
   - component: {fileID: 2039438603}
   - component: {fileID: 2039438602}
   - component: {fileID: 2039438604}
@@ -2082,18 +2081,6 @@ MonoBehaviour:
     value: 90
   _hp:
     value: 1000
---- !u!114 &2039438601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2039438593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53c9222970fe5324f8496a772e1d55de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SE: []
 --- !u!114 &2039438602
 MonoBehaviour:
   m_ObjectHideFlags: 0
