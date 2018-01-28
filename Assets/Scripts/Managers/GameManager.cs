@@ -50,6 +50,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public LayerMask VirusMask;
 
     /// <summary>
+    /// TrashのLayer
+    /// </summary>
+    public LayerMask TrashMask;
+
+    /// <summary>
     /// マウスの箇所取得
     /// </summary>
     /// 
@@ -293,7 +298,27 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
                     var ball = col.GetComponent<Bound_ball>();
                     if ( ball != null ) {
-                        Debug.Log("obj.GetComponent<Bound_ball>()");
+                        Destroy(col.gameObject);
+                        return;
+                    }
+
+                    var folder = col.GetComponent<Folder_Destroy>();
+                    if ( folder != null ) {
+                        Destroy(col.gameObject);
+                        return;
+                    }
+
+                    var increase = col.GetComponent<Increase>();
+                    if ( increase != null ) {
+                        Destroy(col.gameObject);
+                        return;
+                    }
+                }
+
+                col = Physics2D.OverlapPoint(PressPointPos, TrashMask);
+                if ( col != null ) {
+                    var trash = col.GetComponent<Trash>();
+                    if ( trash != null ) {
                         Destroy(col.gameObject);
                         return;
                     }

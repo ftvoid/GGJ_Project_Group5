@@ -2068,6 +2068,9 @@ MonoBehaviour:
   VirusMask:
     serializedVersion: 2
     m_Bits: 256
+  TrashMask:
+    serializedVersion: 2
+    m_Bits: 2048
   EmailRemainTime: 0
   GoodOrBad: 0
   BadMailRemainTimer: 0
