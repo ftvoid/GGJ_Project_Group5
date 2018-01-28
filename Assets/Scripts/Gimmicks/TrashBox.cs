@@ -60,7 +60,7 @@ public class TrashBox : MonoBehaviour {
         {
             yield return new WaitForSeconds(_coolTime);
             GameObject Clone = Instantiate(_trash, gameObject.transform);
-            Clone.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-250.0f, 250.0f), 300.0f));
+            Clone.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-250.0f, 250.0f), 300.0f) * 15.0f);
         }
     }
     /// <summary>
