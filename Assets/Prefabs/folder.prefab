@@ -21,6 +21,8 @@ GameObject:
   - component: {fileID: 4033599763215588}
   - component: {fileID: 212420126910001028}
   - component: {fileID: 114696525758895602}
+  - component: {fileID: 114698779133482110}
+  - component: {fileID: 61983303716358710}
   m_Layer: 8
   m_Name: folder
   m_TagString: Virus
@@ -41,6 +43,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &61983303716358710
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1288613531897042}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.25, y: 1.25}
+    newSize: {x: 1.25, y: 1.25}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.25, y: 1.25}
+  m_EdgeRadius: 0
 --- !u!114 &114696525758895602
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -55,6 +82,18 @@ MonoBehaviour:
   Damage: 50
   timeout: 3
   increase: {fileID: 1640410437446210, guid: ff70b1a01a058b94ebcf2fda3744f0cf, type: 2}
+--- !u!114 &114698779133482110
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1288613531897042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf433720d3b20c04a97308e73ab89e97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 50
 --- !u!212 &212420126910001028
 SpriteRenderer:
   m_ObjectHideFlags: 1
