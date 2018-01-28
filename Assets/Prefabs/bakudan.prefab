@@ -102,7 +102,7 @@ MonoBehaviour:
   _state: 3
   speed: 1
   size: 8
-  Damage: 0
+  Damage: 200
 --- !u!212 &212706350288755158
 SpriteRenderer:
   m_ObjectHideFlags: 1

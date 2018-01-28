@@ -67,6 +67,7 @@ public class Scaling : MonoBehaviour
                 if (myscale.transform.localScale.x <= pinch_size)
                 {
                     _state = State.Stop;
+                    GimmickManager.Instance.SoundStart(7);
                     GameManager.Instance.AttackDamage -= Damage;
                     Destroy(gameObject);
                 }
@@ -82,10 +83,8 @@ public class Scaling : MonoBehaviour
 
     public void StateChangePinching(float sp)
     {
-        
         myscale.transform.localScale -= new Vector3(1, 1, 0) * sp;
         _state = State.ScaleDown;
-        Debug.Log("a");
     }
 
 }

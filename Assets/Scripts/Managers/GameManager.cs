@@ -159,7 +159,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
                 MailAppearTimer();
             }
             VirusAttackToPC();
-            VirusMemoryAttackDamage.Value = 0;
+            //VirusMemoryAttackDamage.Value = 0;
 
             /*
             if ()
@@ -200,7 +200,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     {
         if (VirusOccurenceDicision == true)
         {            
-            HP -= VirusMemoryAttackDamage.Value;
+            HP = MaxHP - VirusMemoryAttackDamage.Value;
             GF.intensity = 1 - HP / MaxHP;
             float ColorGain = (HP / MaxHP); 
             //BackGround.color = new Color(255, ColorGain, ColorGain);
