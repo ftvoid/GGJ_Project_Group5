@@ -11,15 +11,15 @@ public class GimmickManager : SingletonMonoBehaviour<GimmickManager>
     {
         base.Awake();
 
-        GameObject[] obj = GameObject.FindGameObjectsWithTag("Virus");
-        if(obj.Length > 1)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            DontDestroyOnLoad(gameObject);
-        }
+        //GameObject[] obj = GameObject.FindGameObjectsWithTag("Virus");
+        //if(obj.Length > 1)
+        //{
+        //    Destroy(gameObject);
+        //}
+        //else
+        //{
+        //    DontDestroyOnLoad(gameObject);
+        //}
 
         for(int i = 0; i < SEsources.Length; i++)
         {

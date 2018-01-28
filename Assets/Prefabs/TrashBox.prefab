@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4708164846459756}
   - component: {fileID: 212415251263500136}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: gomibako_huta
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,9 +36,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4983875247174990}
   - component: {fileID: 114146013587619148}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TrashBox
-  m_TagString: Untagged
+  m_TagString: Virus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,7 +52,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4097965350634758}
   - component: {fileID: 212255531959072952}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: gomibako_hontai
   m_TagString: Untagged
   m_Icon: {fileID: 0}
