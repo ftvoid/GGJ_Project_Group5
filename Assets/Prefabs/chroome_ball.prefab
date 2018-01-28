@@ -90,8 +90,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 50
-  timeout: 3
-  speed: 20
+  timeout: 5
+  speed: 15
 --- !u!212 &212749169467696682
 SpriteRenderer:
   m_ObjectHideFlags: 1
