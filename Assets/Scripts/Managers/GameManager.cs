@@ -234,6 +234,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         if ( HP <= 0.0f ) {
             HPBecomeZero();
         }
+
+        if ( HP < MaxHP ) {
+            GimmickManager.Instance.SoundLopeStart(5);
+            GimmickManager.Instance.SoundLopeStart(19);
+        } else {
+            GimmickManager.Instance.SoundStop();
+        }
     }
 
     public void HPBecomeZero()
