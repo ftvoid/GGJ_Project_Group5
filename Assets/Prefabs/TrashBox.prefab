@@ -114,7 +114,7 @@ MonoBehaviour:
   _cover: {fileID: 4708164846459756}
   _body: {fileID: 4097965350634758}
   _shakeDuration: 100000
-  _coolTime: 1
+  _coolTime: 1.5
   _trashLoop: 1000
   _trash: {fileID: 1971028239659900, guid: 83444cafa9180af4887ec4f95da10d62, type: 2}
 --- !u!212 &212255531959072952
