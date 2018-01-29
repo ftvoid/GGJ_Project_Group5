@@ -1,2 +1,2 @@
-# GGJ_Project_Group5 Private
-神奈川工科大学GGJグループ5の開発用リポジトリです。
+# HAND THE WALL
+東京工科大学会場GGJ グループ5 タミフルンの最終成果物です。
